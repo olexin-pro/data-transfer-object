@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Ol3x1n\DataTransferObject;
 
+use Illuminate\Http\Request;
 use JsonSerializable;
 use Ol3x1n\DataTransferObject\Contracts\DTOInterface;
 use Ol3x1n\DataTransferObject\Exceptions\MissingRequiredField;
+use Ol3x1n\DataTransferObject\Laravel\DTOCast;
 use Ol3x1n\DataTransferObject\Services\ConverterResolver;
 use Ol3x1n\DataTransferObject\Services\ReflectionStorage;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionProperty;
 
 abstract class AbstractDTO implements DTOInterface, JsonSerializable
@@ -18,6 +21,9 @@ abstract class AbstractDTO implements DTOInterface, JsonSerializable
     protected array $normalizedData;
     private ConverterResolver $resolver;
 
+    /**
+     * @throws ReflectionException
+     */
     public function __construct(array $data)
     {
         $this->resolver = new ConverterResolver();
@@ -36,6 +42,9 @@ abstract class AbstractDTO implements DTOInterface, JsonSerializable
         return $this->normalizedData;
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function toArray(): array
     {
         $out = [];
@@ -53,6 +62,18 @@ abstract class AbstractDTO implements DTOInterface, JsonSerializable
         return $out;
     }
 
+    /**
+     * @throws ReflectionException
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+
+    /**
+     * @throws ReflectionException
+     */
     private function initializeFields(): void
     {
         foreach ($this->getReflection()->getProperties() as $property) {
@@ -127,8 +148,31 @@ abstract class AbstractDTO implements DTOInterface, JsonSerializable
         return strtolower($key);
     }
 
+    /**
+     * @throws ReflectionException
+     */
     private function getReflection(): ReflectionClass
     {
         return ReflectionStorage::get(static::class);
+    }
+
+    public static function cast(): string
+    {
+        return DTOCast::class . ':' . static::class;
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public static function fromRequest(Request $request): static
+    {
+        return new static(
+            array_merge(
+                $request->query(),
+                $request->post(),
+                $request->json()->all(),
+                $request->files->all()
+            )
+        );
     }
 }
