@@ -16,4 +16,5 @@ enum TypeEnum: string
     case DATE = 'date';
     case ENUM = 'enum';
     case FLUENT = 'fluent';
+    case DTO = 'dto';
 }
