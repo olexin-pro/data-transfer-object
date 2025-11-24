@@ -1,0 +1,60 @@
+{
+  "name": "olexin-pro/data-transfer-object",
+  "type": "library",
+  "description": "DTO with convert",
+  "keywords": ["laravel", "laravel-packages", "dto", "data-transfer-object"],
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Ol3x1n\\DataTransferObject\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "DataTransferObject\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": "^8.3",
+    "illuminate/support": "^10.0 || ^11.0 || ^12.0",
+    "illuminate/contracts": "^10.0 || ^11.0 || ^12.0",
+    "illuminate/collections": "^10.0 || ^11.0 || ^12.0",
+    "illuminate/database": "^10.0 || ^11.0 || ^12.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^10.6",
+    "fakerphp/faker": "^1.23",
+    "phpunit/phpunit": "^12.4.2",
+    "laravel/pint": "^1.25",
+    "phpstan/phpstan": "^2.1"
+  },
+  "scripts": {
+    "analyse": [
+      "./vendor/bin/phpstan analyse --memory-limit 512M"
+    ],
+    "pint": [
+      "./vendor/bin/pint --preset psr12"
+    ],
+    "test": [
+      "./vendor/bin/phpunit"
+    ],
+    "test:coverage": [
+      "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-text"
+    ],
+    "test:coverage-html": [
+      "XDEBUG_MODE=coverage ./vendor/bin/phpunit --coverage-html ./coverage"
+    ]
+  },
+  "extra": {
+    "laravel": {
+      "providers": []
+    }
+  },
+  "minimum-stability": "stable",
+  "authors": [
+    {
+      "name": "ol3x1n",
+      "email": "aizharolexin@yandex.kz"
+    }
+  ]
+}
