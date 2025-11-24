@@ -1,34 +1,37 @@
 # 📘 **Data Transfer Object**
 
-Конвертация входящих данных через строгие DTO с использованием Reflection, атрибутов PHP 8, автоматического приведения типов, вложенных DTO, Laravel Casts, и интеграции с API Resources.
+A powerful and strict DTO layer for PHP/Laravel with automatic type conversion, PHP 8 attributes, nested DTO support, Laravel Casts, and seamless integration with API Resources.
 
-
-
-# ✨ Features
-
-* 🚀 Автоматическое преобразование данных в типизированные DTO
-* 🔍 Атрибуты PHP 8 для описания полей
-* 🔄 Поддержка enum-типов конвертации
-* 🧩 Вложенные DTO
-* ⚙️ Строгая валидация типов
-* 📦 Поддержка Laravel Model Casts
-* 🌐 Request → DTO → Resource pipeline
-* 🪞 Reflection cache + высокопроизводительная архитектура
-* 🔒 Безопасность и контроль над входящими данными
-* 🧪 Unit-тесты из коробки
+Built for production-grade input validation, transformation, and transport.
 
 ---
 
-# 📦 Установка
+# ✨ Features
+
+* 🚀 Automatic conversion of input into strongly typed DTOs
+* 🔍 PHP 8 Attributes for field mapping
+* 🔄 Enum-based type casting
+* 🧩 Built-in support for nested DTOs
+* ⚙️ Strict type validation
+* 📦 Laravel Model Casts
+* 🌐 Request → DTO → Resource pipeline
+* 🪞 Reflection caching for high performance
+* 🔒 Safe handling and normalization of input
+* 🧪 Includes a full test suite
+
+---
+
+# 📦 Installation
 
 ```bash
 composer require olexin-pro/data-transfer-object
 ```
 
+---
 
-# 🚀 Быстрый старт
+# 🚀 Quick Start
 
-Создаём DTO:
+Define a DTO:
 
 ```php
 use Ol3x1n\DataTransferObject\AbstractDTO;
@@ -48,7 +51,7 @@ class UserDTO extends AbstractDTO
 }
 ```
 
-Вложенный DTO:
+Nested DTO:
 
 ```php
 class ProfileDTO extends AbstractDTO
@@ -61,10 +64,11 @@ class ProfileDTO extends AbstractDTO
 }
 ```
 
+---
 
-# 🎯 Использование
+# 🎯 Usage
 
-## Создание вручную
+## Creating DTOs manually
 
 ```php
 $dto = new UserDTO([
@@ -77,22 +81,23 @@ $dto = new UserDTO([
 ]);
 ```
 
-### Результат
+### Results
 
-* `id` → int
-* `profile` → объект `ProfileDTO`
-* все поля нормализованы (snake_case → normalized keys)
+* `id` → converted to `int`
+* `profile` → automatically converted to `ProfileDTO`
+* Input keys are normalized (`camelCase` → `snake_case`)
 
 ---
 
 # 📥 Request → DTO
 
-Любой запрос можно преобразовать в DTO:
+Convert any request into a DTO:
 
 ```php
 $dto = UserDTO::fromRequest($request);
 ```
 
+Laravel Controllers can auto-inject DTOs:
 
 ```php
 class UserController extends Controller 
@@ -100,7 +105,6 @@ class UserController extends Controller
     public function store(CreateUserDTO $dto)
     {
         $user = $this->service->create($dto);
-    
         return new UserResource($user);
     }
     
@@ -111,15 +115,15 @@ class UserController extends Controller
 }
 ```
 
-Работает и с JSON, и с POST, и с GET, и с файлами.
+Works with JSON payloads, POST, GET, form-data, and file uploads.
 
 ---
 
 # 🗄 Laravel Model Casts
 
-Позволяет хранить DTO в базе как JSON и получать обратно объект.
+Store and retrieve DTOs from the database as JSON.
 
-### В модели:
+### In a model:
 
 ```php
 protected $casts = [
@@ -127,10 +131,10 @@ protected $casts = [
 ];
 ```
 
-### Использование:
+### Usage:
 
 ```php
-$user->profile->country; // ProfileDTO
+$user->profile->country; // ProfileDTO instance
 $user->profile = new ProfileDTO([...]);
 $user->save();
 ```
@@ -139,7 +143,7 @@ $user->save();
 
 # 🌐 DTO → API Resource
 
-DTO полностью совместим с Laravel Resources:
+DTOs work seamlessly with Laravel Resources:
 
 ```php
 class UserResource extends JsonResource
@@ -151,78 +155,83 @@ class UserResource extends JsonResource
 }
 ```
 
-Использование:
+Usage:
 
 ```php
 return new UserResource($dto);
 // or
-return new \Ol3x1n\DataTransferObject\Laravel\DTOResource($dto)
+return new \Ol3x1n\DataTransferObject\Laravel\DTOResource($dto);
 ```
 
 ---
 
-# 🔄 Вложенные DTO
+# 🔄 Nested DTOs
 
-Если поле помечено:
+With:
 
 ```php
 #[Field('profile', TypeEnum::DTO)]
 public ProfileDTO $profile;
 ```
 
-и в данных:
+and input:
 
 ```json
 "profile": { "age": 30, "country": "USA" }
 ```
 
-→ автоматически создаётся экземпляр ProfileDTO.
+A `ProfileDTO` instance is created automatically.
 
 ---
 
-# 🧰 Enum типов
+# 🧰 Type Enum
 
 ```php
 enum TypeEnum: string
 {
-    case INT       = 'int';
-    case FLOAT     = 'float';
-    case STRING    = 'string';
-    case BOOLEAN   = 'boolean';
-    case ARRAY     = 'array';
-    case DATE      = 'date';
-    case DTO       = 'dto';
-    case COLLECTION= 'collection';
-    case DYNAMIC   = 'dynamic';
+    case INT        = 'int';
+    case FLOAT      = 'float';
+    case STRING     = 'string';
+    case BOOLEAN    = 'boolean';
+    case ARRAY      = 'array';
+    case DATE       = 'date';
+    case DTO        = 'dto';
+    case COLLECTION = 'collection';
+    case DYNAMIC    = 'dynamic';
 }
 ```
 
-# 🧪 Тестирование
+---
 
-Пакет полностью покрыт тестами.
+# 🧪 Testing
 
-Запуск:
+The package ships with complete test coverage.
+
+Run tests:
 
 ```bash
 vendor/bin/phpunit
 ```
 
+---
 
-# 🧠 Принципы и архитектура
+# 🧠 Architecture & Principles
 
-* DTO неизменяемы после создания
-* Каждый Field описывает:
-    * имя поля
-    * тип конвертации
-    * обязательность
-* Reflection кэшируется
-* Внутренние поля DTO (`_raw`, `_normalized`) скрыты
-* Поля приводятся к типам, указанным в PHP
-* Все преобразования строго типизированы
-* Ошибки приводят к `TypeError` или `MissingRequiredField`
+* DTOs are immutable after creation
+* Each `Field` attribute defines:
 
+    * input key name
+    * conversion type
+    * whether the field is required
+* Reflection is cached for performance
+* Internal DTO fields (`_raw`, `_normalized`) are never exposed
+* All fields are strictly type-validated based on PHP property types
+* Conversion errors result in `TypeError` or `MissingRequiredField`
+* Nested DTOs are automatically resolved
 
-# 📚 Пример продвинутого DTO
+---
+
+# 📚 Advanced DTO example
 
 ```php
 class OrderDTO extends AbstractDTO
@@ -241,8 +250,9 @@ class OrderDTO extends AbstractDTO
 }
 ```
 
+---
 
-# 🧩 Маппинг Request → DTO → Resource (Pipeline)
+# 🧩 Request → DTO → Resource pipeline
 
 ```php
 public function store(CreateOrderDTO $dto)
@@ -252,10 +262,14 @@ public function store(CreateOrderDTO $dto)
 }
 ```
 
-# 📝 Лицензия
+---
+
+# 📝 License
 
 MIT License.
 
-# 💬 Обратная связь
+---
 
-Issues и PR приветствуются.
+# 💬 Feedback
+
+Issues and pull requests are welcome.
