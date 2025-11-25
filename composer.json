@@ -47,7 +47,9 @@
   },
   "extra": {
     "laravel": {
-      "providers": []
+      "providers": [
+          "Ol3x1n\\DataTransferObject\\DTOProvider"
+      ]
     }
   },
   "minimum-stability": "stable",
