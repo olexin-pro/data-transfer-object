@@ -18,27 +18,26 @@ use Ol3x1n\DataTransferObject\Enums\TypeEnum;
 
 final class ConverterResolver
 {
-    private array $instances = [];
+    private static array $instances = [];
 
     /**
-     * @param TypeEnum|class-string $type
-     * @return TypeConverterInterface
+     * @param TypeEnum|class-string<TypeConverterInterface>|string $type
      */
     public function resolve(TypeEnum|string $type): TypeConverterInterface
     {
-        if (is_string($type) && is_subclass_of($type, TypeConverterInterface::class)) {
-            return new $type();
+        $key = $type instanceof TypeEnum ? $type->value : $type;
+        if (isset(self::$instances[$key])) {
+            return self::$instances[$key];
         }
-        if ($type instanceof TypeEnum === false) {
-            return new DynamicConverter();
-        }
-        return $this->resolveEnumConverter($type);
+        $instance = $this->createInstance($type);
+        self::$instances[$key] = $instance;
+        return $instance;
     }
 
-    private function resolveEnumConverter(TypeEnum $type): TypeConverterInterface
+    private function createInstance(TypeEnum|string $type): TypeConverterInterface
     {
-        if (!isset($this->instances[$type->value])) {
-            $this->instances[$type->value] = match ($type) {
+        if ($type instanceof TypeEnum) {
+            return match ($type) {
                 TypeEnum::ARRAY => new ArrayConverter(),
                 TypeEnum::COLLECTION => new CollectionConverter(),
                 TypeEnum::INT => new IntConverter(),
@@ -50,6 +49,11 @@ final class ConverterResolver
                 default => new DynamicConverter(),
             };
         }
-        return clone $this->instances[$type->value];
+
+        if (is_subclass_of($type, TypeConverterInterface::class)) {
+            return new $type();
+        }
+
+        return new DynamicConverter();
     }
 }
