@@ -1,0 +1,13 @@
+<?php
+
+namespace {{ namespace }};
+
+use Ol3x1n\DataTransferObject\AbstractDTO;
+use Ol3x1n\DataTransferObject\Field;
+use Ol3x1n\DataTransferObject\Enums\TypeEnum;
+
+class {{ class }} extends AbstractDTO
+{
+    // #[Field('name', TypeEnum::STRING)]
+    // public string $name;
+}
