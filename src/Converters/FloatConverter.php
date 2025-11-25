@@ -8,8 +8,12 @@ use Ol3x1n\DataTransferObject\Contracts\TypeConverterInterface;
 
 final class FloatConverter implements TypeConverterInterface
 {
-    public function convert($value): float
+    public function convert($value): ?float
     {
+        if ($value === null) {
+            return null;
+        }
+
         return floatval($value);
     }
 }

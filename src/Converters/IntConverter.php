@@ -8,8 +8,11 @@ use Ol3x1n\DataTransferObject\Contracts\TypeConverterInterface;
 
 final class IntConverter implements TypeConverterInterface
 {
-    public function convert($value): int
+    public function convert($value): ?int
     {
+        if ($value === null) {
+            return null;
+        }
         return intval($value);
     }
 }

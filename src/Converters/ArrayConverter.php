@@ -12,8 +12,12 @@ final class ArrayConverter implements TypeConverterInterface
     /**
      * @throws JsonException
      */
-    public function convert(mixed $value): array
+    public function convert(mixed $value): ?array
     {
+        if (blank($value)){
+            return null;
+        }
+
         if (is_string($value) && json_validate($value)) {
             return json_decode($value, true, 512, JSON_THROW_ON_ERROR);
         }
