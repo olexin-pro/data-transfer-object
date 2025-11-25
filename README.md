@@ -1,7 +1,7 @@
 # 📘 Data Transfer Object
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/olexin-pro/data-transfer-object.svg?style=flat-square)](https://packagist.org/packages/olexin-pro/data-transfer-object)
-[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.2-blue?style=flat-square)](https://www.php.net/releases/)
+[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.3-blue?style=flat-square)](https://www.php.net/releases/)
 [![License](https://img.shields.io/packagist/l/olexin-pro/data-transfer-object.svg?style=flat-square)](https://packagist.org/packages/olexin-pro/data-transfer-object)
 [![Tests](https://img.shields.io/github/actions/workflow/status/olexin-pro/data-transfer-object/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/olexin-pro/data-transfer-object/actions)
 
@@ -44,7 +44,7 @@ This package provides automatic type conversion, PHP 8 Attribute mapping, nested
 
 ## 📦 Installation
 
-Requires **PHP 8.2+** (due to Enum support).
+Requires **PHP 8.3+**
 
 ```bash
 composer require olexin-pro/data-transfer-object
