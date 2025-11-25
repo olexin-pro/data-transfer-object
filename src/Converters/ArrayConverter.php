@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Ol3x1n\DataTransferObject\Converters;
 
+use JsonException;
 use Ol3x1n\DataTransferObject\Contracts\TypeConverterInterface;
 
 final class ArrayConverter implements TypeConverterInterface
 {
+    /**
+     * @throws JsonException
+     */
     public function convert(mixed $value): array
     {
         if (is_string($value) && json_validate($value)) {
