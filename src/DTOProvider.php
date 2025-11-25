@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Ol3x1n\DataTransferObject;
 
 use Illuminate\Support\ServiceProvider;
-use Ol3x1n\DataTransferObject\Console\Commands\MakeDTOCommand;
 use Ol3x1n\DataTransferObject\Contracts\DTOInterface;
+use Ol3x1n\DataTransferObject\Laravel\Console\MakeDTOCommand;
 
 final class DTOProvider extends ServiceProvider
 {

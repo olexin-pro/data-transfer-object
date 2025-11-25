@@ -1,8 +1,8 @@
 <?php
 
-namespace Ol3x1n\DataTransferObject\Console\Commands;
+namespace Ol3x1n\DataTransferObject\Laravel\Console;
 
-use http\Exception\RuntimeException;
+use RuntimeException;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
