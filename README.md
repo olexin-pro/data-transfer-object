@@ -184,11 +184,7 @@ use App\DTO\ProfileDTO;
 class User extends Model
 {
     protected $casts = [
-        // Shorthand
         'profile' => ProfileDTO::class, 
-        
-        // OR explicit definition if needed
-        'settings' => DTOCast::class . ':' . SettingsDTO::class,
     ];
 }
 ```

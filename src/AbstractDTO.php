@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Ol3x1n\DataTransferObject;
 
+use Illuminate\Contracts\Database\Eloquent\Castable;
 use Illuminate\Http\Request;
 use JsonSerializable;
 use Ol3x1n\DataTransferObject\Contracts\DTOInterface;
@@ -17,7 +18,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionProperty;
 
-abstract class AbstractDTO implements DTOInterface, JsonSerializable
+abstract class AbstractDTO implements DTOInterface, JsonSerializable, Castable
 {
     protected readonly array $_raw;
     protected array $_normalized;
@@ -186,9 +187,9 @@ abstract class AbstractDTO implements DTOInterface, JsonSerializable
         return ReflectionStorage::get(static::class);
     }
 
-    public static function cast(): string
+    public static function castUsing(array $arguments): DTOCast
     {
-        return DTOCast::class . ':' . static::class;
+        return new DTOCast(static::class);
     }
 
     /**
