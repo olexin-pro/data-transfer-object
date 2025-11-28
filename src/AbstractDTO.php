@@ -206,4 +206,9 @@ abstract class AbstractDTO implements DTOInterface, JsonSerializable, Castable
             )
         );
     }
+
+    public static function cast(): string
+    {
+        return DTOCast::class . ':' . static::class;
+    }
 }
